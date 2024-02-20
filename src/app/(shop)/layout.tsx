@@ -1,4 +1,4 @@
-import { Sidebar, TopMenu } from "@/components";
+import { Footer, Sidebar, TopMenu } from "@/components";
 import React from "react";
 
 const ShopLayout = ({ children }: { children: React.ReactNode }) => {
@@ -9,6 +9,8 @@ const ShopLayout = ({ children }: { children: React.ReactNode }) => {
       <Sidebar />
 
       <div className="px:0 md:px-10">{children}</div>
+
+      <Footer />
     </div>
   );
 };
