@@ -5,5 +5,6 @@ export * from "./product/slides-show/ProductSlidesShow";
 export * from "./products/product-grid/ProductGrid";
 export * from "./ui/footer/Footer";
 export * from "./ui/not-found/PageNotFound";
+export * from "./ui/pagination/Pagination";
 export * from "./ui/sidebar/Sidebar";
 export * from "./ui/top-menu/TopMenu";

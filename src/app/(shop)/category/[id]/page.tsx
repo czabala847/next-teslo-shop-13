@@ -1,27 +1,36 @@
-import { ProductGrid } from "@/components";
-import { Title } from "@/components/ui/title/Title";
-import { Category } from "@/interfaces";
-import { initialData } from "@/seed/seed";
+export const revalidate = 60; //mantener cache 60 segundos
 
-const seedProducts = initialData.products;
+import { getPaginatedProductsWithImages } from "@/actions";
+import { Pagination, ProductGrid } from "@/components";
+import { Title } from "@/components/ui/title/Title";
+import { Gender } from "@prisma/client";
 
 interface Props {
   params: {
-    id: Category;
+    id: string;
+  };
+  searchParams: {
+    page?: string;
   };
 }
 
-const CategoryPage = ({ params }: Props) => {
-  const { id } = params;
+const CategoryPage = async ({ params, searchParams }: Props) => {
+  const { id: gender } = params;
 
-  const products = seedProducts.filter((product) => product.gender === id);
+  const page = searchParams.page ? parseInt(searchParams.page) : 1;
+  const { products, totalPages } = await getPaginatedProductsWithImages({
+    page,
+    gender: gender as Gender,
+  });
 
-  const labels: Record<Category, string> = {
+  const labels: Record<string, string> = {
     men: "para hombres",
     women: "para mujeres",
     kid: "para niños",
     unisex: "para todos",
   };
+
+  // if (products.length === 0) redirect("/");
 
   // if (id === "kids") {
   //   notFound();
@@ -30,12 +39,14 @@ const CategoryPage = ({ params }: Props) => {
   return (
     <>
       <Title
-        title={`Artículos de ${labels[id]}`}
+        title={`Artículos de ${labels[gender]}`}
         subtitle="Todos los productos"
         className="mb-2"
       />
 
       <ProductGrid products={products} />
+
+      <Pagination totalPages={totalPages || 0} />
     </>
   );
 };
